@@ -1,29 +1,26 @@
 version: '3'
- 
+
 services:
-  db:
-    image: mysql:5.7
-    container_name: db
-    environment:
-      MYSQL_ROOT_PASSWORD: 123456
-      MYSQL_DATABASE: investnow
-      MYSQL_USER: fullzer4
-      MYSQL_PASSWORD: 123456
+  postgresqldb:
+    image: postgres
     ports:
-      - "6033:3306"
-    volumes:
-      - dbdata:/var/lib/mysql
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: pma
-    links:
-      - db
+      - "5432:5432"
     environment:
-      PMA_HOST: db
-      PMA_PORT: 3306
-      PMA_ARBITRARY: 1
-    restart: always
+      - POSTGRES_PASSWORD=123456
+      - POSTGRES_USER=fullzer4
+      - POSTGRES_DB=investnow
+    networks:
+      - postgres-compose-network
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "gabrielpelizzaro@gmail.com"
+      PGADMIN_DEFAULT_PASSWORD: "123456"
     ports:
-      - 8081:80
-volumes:
-  dbdata:
+      - "16543:80"
+    networks:
+      - postgres-compose-network
+
+networks: 
+  postgres-compose-network:
+    driver: bridge
