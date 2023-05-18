@@ -1,64 +1,24 @@
-import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Pressable } from 'react-native';
+import { useRouter } from "expo-router"
+import { StyleSheet, View, Text, Pressable } from "react-native"
 
 const app = () => {
-    const [user, setUser] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
 
     const router = useRouter()
 
-    const handleLogin = async () => {
-    
-        const response = await fetch('http://10.0.2.2:3000/createusers', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                name: user,
-                email: email,
-                password: password
-            }),
-            mode: 'cors'
-        });
-
-        if (response.ok) {
-            router.push("/dash")
-        } else {
-            console.error(response)
-            return await response.text();
-        }
-    };
     return(
         <View style={styles.container}>
-            <Text style={styles.Title}>Criar usuario</Text>
-            <View style={styles.Form}>
-                <TextInput
-                    style={styles.inputs}
-                    placeholder="username"
-                    value={user}
-                    onChangeText={text => setUser(text)}
-                    secureTextEntry
-                />
-                <TextInput
-                    style={styles.inputs}
-                    placeholder="Email"
-                    value={email}
-                    onChangeText={text => setEmail(text)}
-                />
-                <TextInput
-                    style={styles.inputs}
-                    placeholder="Senha"
-                    value={password}
-                    onChangeText={text => setPassword(text)}
-                    secureTextEntry
-                />
+            <Text style={styles.title}>Bem vindo</Text>
+            <View style={styles.contentC}>
+                <Text style={styles.content}>Este projeto e um crud bem simples com backend em express com sequelize e utilizando banco de dados postgres espero que gostem fiquem a vontade para navegar na aplicacao.</Text>
             </View>
-            <Pressable style={styles.enter} onPress={() => handleLogin()}>
-                <Text style={styles.enterText}>Entrar</Text>
-            </Pressable>
+            <View style={styles.linkC}>
+                <Pressable style={styles.link} onPress={() => router.push("/create")}>
+                    <Text style={styles.linkText}>Criar Usuario</Text>
+                </Pressable>
+                <Pressable style={styles.link} onPress={() => router.push("/dash")}>
+                    <Text style={styles.linkText}>Ir para lista</Text>
+                </Pressable>
+            </View>
         </View>
     )
 }
@@ -69,46 +29,42 @@ const styles = StyleSheet.create({
         backgroundColor: '#050505',
         alignItems: 'center',
         justifyContent: "space-between",
-        paddingBottom: 50,
         paddingTop: 50,
     },
-    Title: {
+    title: {
         color: "#eee",
         fontSize: 28,
-        letterSpacing: 1,
+        letterSpacing: 10
     },
-    Form: {
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        flexDirection: "column",
-        width: "100%"
-    },
-    inputs: {
-        borderWidth: 1,
-        backgroundColor: "#575757e6",
-        borderRadius: 5,
-        paddingHorizontal: 20,
-        paddingVertical: 5,
-        fontSize: 16,
+    content: {
         color: "#eee",
-        marginBottom: 20,
+        fontSize: 22,
+        letterSpacing: 1,
+        textAlign: "justify"
+    },
+    contentC: {
         width: "80%",
-        height: 62,
     },
-    enter: {
+    linkC: {
+        width: "80%",
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between"
+    },
+    link: {
         backgroundColor: "#1b71d3",
-        width: "75%",
-        height: "7%",
+        width: "45%",
+        height: "30%",
         borderRadius: 5,
         alignItems: "center",
         justifyContent: "center",
     },
-    enterText: {
+    linkText: {
         color: "#eee",
-        fontSize: 18,
-        letterSpacing: 1,
+        fontSize: 15,
+        letterSpacing: 1
     }
 })
 
-export default app;
+export default app
